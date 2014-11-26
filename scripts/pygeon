@@ -1,0 +1,28 @@
+#! /usr/bin/env python
+
+import pygeon
+import argparse
+import IPy
+
+parser = argparse.ArgumentParser(description='Geolocate IP addresses')
+parser.add_argument('-d', '--db', '--database',
+                    dest='db_url', action='store',
+                    nargs = '?',
+                    help='the database URL')
+parser.add_argument('ips', nargs='+')
+
+args = parser.parse_args()
+
+store = pygeon.SQLAlchemyStore(args.db_url)
+geo = pygeon.Geolocator(store)
+
+for ipstr in args.ips:
+    if ipstr == 'update':
+        print 'Found %d ranges' % geo.update()
+    else:
+        ip = IPy.IP(ipstr)
+        iprange = geo.lookup(ip)
+        if iprange is None:
+            print 'None'
+        else:
+            print iprange.country
