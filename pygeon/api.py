@@ -7,10 +7,9 @@ import re
 import bisect
 import zlib
 import bintrees
-from IPy import IP, IPSet
 
 from .model import IPRange
-from .utils import FixedOffset, Entry
+from .utils import FixedOffset, Entry, IP
 from .parser import DelegatedParser
 
 class Geolocator(object):

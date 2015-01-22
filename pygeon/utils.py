@@ -1,5 +1,22 @@
 import datetime
+import IPy
+from IPy import IP
 
+# Monkeypatch IPy so it works on Python 3
+def _ip_lt(self, other):
+    return self.__cmp__(other) < 0
+def _ip_le(self, other):
+    return self.__cmp__(other) <= 0
+def _ip_ge(self, other):
+    return self.__cmp__(other) >= 0
+def _ip_gt(self, other):
+    return self.__cmp__(other) > 0
+
+IP.__lt__ = _ip_lt
+IP.__le__ = _ip_le
+IP.__ge__ = _ip_ge
+IP.__gt__ = _ip_gt
+    
 class Entry(object):
     __slots__ = ['startaddr', 'endaddr', 'registry', 'country']
     def __init__(self, startaddr, endaddr, registry, country):
@@ -9,11 +26,19 @@ class Entry(object):
         self.country = country.upper()
 
     def __cmp__(self, other):
-        return cmp(self.startaddr, other.startaddr)
+        return self.startaddr.__cmp__(other.startaddr)
 
+    def __lt__(self, other):
+        return self.startaddr < other.startaddr
+    def __le__(self, other):
+        return self.startaddr <= other.startaddr
     def __eq__(self, other):
         return self.startaddr == other.startaddr
-
+    def __ge__(self, other):
+        return self.startaddr >= other.startaddr
+    def __gt__(self, other):
+        return self.startaddr > other.startaddr
+    
     def __hash__(self):
         return hash(self.startaddr)
 

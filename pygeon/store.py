@@ -1,4 +1,4 @@
-from IPy import IP
+from .utils import IP
 from .model import IPRange
 
 class Store(object):

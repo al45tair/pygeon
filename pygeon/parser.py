@@ -2,7 +2,7 @@ from .utils import FixedOffset, Entry
 
 import re
 import datetime
-from IPy import IP
+from .utils import IP
 
 class DelegatedParser(object):
     # States
